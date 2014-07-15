@@ -1,0 +1,17 @@
+name: NickNames
+version: 2.0
+main: com.github.dzineit.nicknames.NickNames
+
+commands:
+    nick:
+        description: Nickname related commands
+    nicknames:
+        description: Nicknames help
+
+permissions:
+    nicknames.nick.self:
+        description: Lets you change your nickname
+    nicknames.nick.other:
+        description: Lets you change someone else's nickname
+    nicknames.lookup
+        description: Lets you look someone's real name up from their nickname
