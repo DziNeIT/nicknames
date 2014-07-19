@@ -22,53 +22,94 @@ public final class NickCommand implements CommandExecutor {
 
 		if (cn.equals("nick")) {
 			if ((sender instanceof Player)) {
-				Player player = (Player) sender;
-				if (args.length == 0) {
+				final Player player = (Player) sender;
+				if (args.length < 1 || args.length > 2) {
 					player.sendMessage(ChatColor.DARK_RED
 							+ "Usage: /nick <nickname> or /nick <playername> <nickname>");
-				} else if (args.length == 1) {
+				} else {
 					if (args[0].equalsIgnoreCase("off")) {
-						player.setDisplayName(player.getName());
-						nickManager.setNickName(player.getUniqueId(), null);
-						player.sendMessage(ChatColor.GRAY
-								+ "Nickname successfully removed!");
-					} else if (player.hasPermission("nicknames.nick.self")) {
-						if (nickManager.setNickName(player.getUniqueId(),
-								args[0])) {
-							player.setDisplayName(player.getName());
-							player.setDisplayName(args[0]);
-							player.sendMessage(ChatColor.GRAY
-									+ "Nickname successfully changed!");
-						} else {
-							player.sendMessage(ChatColor.DARK_RED
-									+ "Couldn't set nick! Is it already taken?");
-						}
-					} else {
-						player.sendMessage(ChatColor.DARK_RED
-								+ "You don't have permission to change your nickname!");
-					}
-				} else if (args.length == 2) {
-					if (player.hasPermission("nicknames.nick.other")) {
-						@SuppressWarnings("deprecation")
-						Player target = Bukkit.getPlayer(args[0]);
-						if (target != null) {
-							if (nickManager.setNickName(target.getUniqueId(),
-									args[1])) {
-								target.setDisplayName(args[1]);
-								sender.sendMessage(ChatColor.GRAY + "Set "
-										+ target.getName() + "'s nick to "
-										+ args[1]);
+						if (args.length == 1) {
+							if (player.hasPermission("nicknames.nick.self")) {
+								if (nickManager.setNickName(
+										player.getUniqueId(), null)) {
+									player.setDisplayName(player.getName());
+									player.sendMessage(ChatColor.GRAY
+											+ "Nickname successfully removed!");
+								} else {
+									player.sendMessage(ChatColor.DARK_RED
+											+ "Failed to change nickname");
+								}
 							} else {
-								sender.sendMessage(ChatColor.DARK_RED
-										+ "Couldn't set nick! Is it already taken?");
+								player.sendMessage(ChatColor.DARK_RED
+										+ "You don't have permission to change your nickname!");
 							}
 						} else {
-							player.sendMessage(ChatColor.RED + "Player "
-									+ args[0] + " is currently offline. :(");
+							if (player.hasPermission("nicknames.nick.other")) {
+								final String other = args[1];
+								@SuppressWarnings("deprecation")
+								final Player target = Bukkit.getPlayer(other);
+								if (target == null) {
+									sender.sendMessage(ChatColor.DARK_RED
+											+ "That player isn't online!");
+								} else {
+									if (nickManager.setNickName(
+											target.getUniqueId(), null)) {
+										target.setDisplayName(target.getName());
+										sender.sendMessage(ChatColor.GRAY
+												+ "Disabled nickname for "
+												+ other);
+										player.sendMessage(ChatColor.GRAY
+												+ "Your nickname was disabled");
+									} else {
+										sender.sendMessage(ChatColor.DARK_RED
+												+ "Couldn't disable nickname for "
+												+ other);
+									}
+								}
+							}
 						}
 					} else {
-						player.sendMessage(ChatColor.DARK_RED
-								+ "You don't have permission to change other people's nicknames!");
+						if (args.length == 1) {
+							if (player.hasPermission("nicknames.nick.self")) {
+								if (nickManager.setNickName(
+										player.getUniqueId(), args[0])) {
+									player.setDisplayName(player.getName());
+									player.setDisplayName(args[0]);
+									player.sendMessage(ChatColor.GRAY
+											+ "Nickname successfully changed!");
+								} else {
+									player.sendMessage(ChatColor.DARK_RED
+											+ "Couldn't set nick! Is it already taken?");
+								}
+							} else {
+								player.sendMessage(ChatColor.DARK_RED
+										+ "You don't have permission to change your nickname!");
+							}
+						} else if (args.length == 2) {
+							if (player.hasPermission("nicknames.nick.other")) {
+								@SuppressWarnings("deprecation")
+								final Player target = Bukkit.getPlayer(args[0]);
+								if (target != null) {
+									if (nickManager.setNickName(
+											target.getUniqueId(), args[1])) {
+										target.setDisplayName(args[1]);
+										sender.sendMessage(ChatColor.GRAY
+												+ "Set " + target.getName()
+												+ "'s nick to " + args[1]);
+									} else {
+										sender.sendMessage(ChatColor.DARK_RED
+												+ "Couldn't set nick! Is it already taken?");
+									}
+								} else {
+									player.sendMessage(ChatColor.RED
+											+ "Player " + args[0]
+											+ " is currently offline. :(");
+								}
+							} else {
+								player.sendMessage(ChatColor.DARK_RED
+										+ "You don't have permission to change other people's nicknames!");
+							}
+						}
 					}
 				}
 			} else {

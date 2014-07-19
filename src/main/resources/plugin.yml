@@ -13,5 +13,5 @@ permissions:
         description: Lets you change your nickname
     nicknames.nick.other:
         description: Lets you change someone else's nickname
-    nicknames.lookup
+    nicknames.lookup:
         description: Lets you look someone's real name up from their nickname
