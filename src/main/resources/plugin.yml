@@ -1,6 +1,6 @@
 name: NickNames
 version: 2.0
-main: com.github.dzineit.nicknames.NickNames
+main: pw.ollie.nicknames.NickNames
 
 commands:
     nick:
