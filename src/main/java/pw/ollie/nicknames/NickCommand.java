@@ -1,4 +1,4 @@
-package com.github.dzineit.nicknames;
+package pw.ollie.nicknames;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

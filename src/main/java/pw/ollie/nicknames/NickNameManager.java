@@ -1,4 +1,4 @@
-package com.github.dzineit.nicknames;
+package pw.ollie.nicknames;
 
 import java.io.File;
 import java.io.IOException;
