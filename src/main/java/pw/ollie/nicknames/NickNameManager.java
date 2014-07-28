@@ -105,9 +105,11 @@ public final class NickNameManager implements Listener {
 	public void onPlayerJoin(final PlayerJoinEvent event) {
 		final Player player = event.getPlayer();
 		final UUID playerId = player.getUniqueId();
+		final String nick = nicknames.get(playerId);
 
-		if (nicknames.containsKey(playerId)) {
-			player.setDisplayName(nicknames.get(playerId));
+		if (nick != null) {
+			player.setDisplayName(nick);
+			player.setPlayerListName(nick);
 		}
 	}
 }

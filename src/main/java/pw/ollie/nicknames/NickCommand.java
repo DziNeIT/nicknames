@@ -33,6 +33,7 @@ public final class NickCommand implements CommandExecutor {
 								if (nickManager.setNickName(
 										player.getUniqueId(), null)) {
 									player.setDisplayName(player.getName());
+									player.setPlayerListName(player.getName());
 									player.sendMessage(ChatColor.GRAY
 											+ "Nickname successfully removed!");
 								} else {
@@ -55,6 +56,8 @@ public final class NickCommand implements CommandExecutor {
 									if (nickManager.setNickName(
 											target.getUniqueId(), null)) {
 										target.setDisplayName(target.getName());
+										target.setPlayerListName(target
+												.getName());
 										sender.sendMessage(ChatColor.GRAY
 												+ "Disabled nickname for "
 												+ other);
@@ -75,6 +78,7 @@ public final class NickCommand implements CommandExecutor {
 										player.getUniqueId(), args[0])) {
 									player.setDisplayName(player.getName());
 									player.setDisplayName(args[0]);
+									player.setPlayerListName(args[0]);
 									player.sendMessage(ChatColor.GRAY
 											+ "Nickname successfully changed!");
 								} else {
@@ -93,6 +97,7 @@ public final class NickCommand implements CommandExecutor {
 									if (nickManager.setNickName(
 											target.getUniqueId(), args[1])) {
 										target.setDisplayName(args[1]);
+										target.setPlayerListName(args[1]);
 										sender.sendMessage(ChatColor.GRAY
 												+ "Set " + target.getName()
 												+ "'s nick to " + args[1]);
@@ -118,9 +123,7 @@ public final class NickCommand implements CommandExecutor {
 		} else if (cn.equals("nicknames")) {
 			if (args.length == 0) {
 				if (sender instanceof Player) {
-					sender.sendMessage(ChatColor.GOLD + "[NickNames]"
-							+ ChatColor.GREEN
-							+ " Programmed by PandazNWafflez.");
+					sender.sendMessage(ChatColor.GOLD + "[NickNames]");
 					sender.sendMessage(ChatColor.GOLD + "[NickNames]"
 							+ ChatColor.GREEN
 							+ " /nick NICKNAME - Allows changing your nick.");
