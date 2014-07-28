@@ -122,26 +122,17 @@ public final class NickCommand implements CommandExecutor {
 			}
 		} else if (cn.equals("nicknames")) {
 			if (args.length == 0) {
-				if (sender instanceof Player) {
-					sender.sendMessage(ChatColor.GOLD + "[NickNames]");
-					sender.sendMessage(ChatColor.GOLD + "[NickNames]"
-							+ ChatColor.GREEN
-							+ " /nick NICKNAME - Allows changing your nick.");
-					sender.sendMessage(ChatColor.GOLD
-							+ "[NickNames]"
-							+ ChatColor.GREEN
-							+ " /nick PLAYERNAME NICKNAME - Allows changing PLAYERNAME's nick.");
-					sender.sendMessage(ChatColor.GOLD + "[NickNames]"
-							+ ChatColor.RED
-							+ " /nick off - Allows removing your nick.");
-					sender.sendMessage(ChatColor.GOLD + "[NickNames]"
-							+ ChatColor.RED
-							+ " /nicknames disable - Disables plugin =(");
-				} else {
-					sender.sendMessage("[NickNames] Programmed by PandazNWafflez.");
-					sender.sendMessage("[NickNames]" + ChatColor.RED
-							+ " /nicknames disable - Disables plugin =(");
-				}
+				sender.sendMessage(ChatColor.GOLD + "[NickNames]"
+						+ ChatColor.GREEN
+						+ " /nick <nickname> - Allows changing your nick.");
+				sender.sendMessage(ChatColor.GREEN
+						+ " /nick <playername> <nickname> - Allows changing <playername>'s nick.");
+				sender.sendMessage(ChatColor.GOLD + "[NickNames]"
+						+ ChatColor.RED
+						+ " /nick off - Allows removing your nick.");
+				sender.sendMessage(ChatColor.GOLD + "[NickNames]"
+						+ ChatColor.RED
+						+ " /nicknames lookup <nickname> - Look up <nickname>");
 			} else {
 				final String arg = args[0].toLowerCase();
 				if (arg.equals("lookup")) {
