@@ -52,12 +52,16 @@ public final class NickNames extends JavaPlugin {
 		getCommand("nick").setExecutor(nickCommand);
 		getCommand("nicknames").setExecutor(nickCommand);
 
-		getServer().getPluginManager().registerEvents(manager, this);
+		getServer().getPluginManager().registerEvents(new NickNamesListener(this), this);
 	}
 
 	@Override
 	public void onDisable() {
 		manager.saveNicks(nicksFile);
+	}
+
+	public NickNameManager getNickManager() {
+		return manager;
 	}
 
 	public boolean allowDuplicates() {

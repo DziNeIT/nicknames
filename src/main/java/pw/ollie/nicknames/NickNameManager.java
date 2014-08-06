@@ -11,13 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 
-public final class NickNameManager implements Listener {
+public final class NickNameManager {
 	private final NickNames plugin;
 	private final boolean duplicate;
 
@@ -29,19 +24,29 @@ public final class NickNameManager implements Listener {
 		duplicate = plugin.allowDuplicates();
 	}
 
+	public String getNickName(UUID player) {
+		return nicknames.get(player);
+	}
+
+	public UUID getPlayerFromNickName(String nick) {
+		if (duplicate) return null;
+
+		for (Entry<UUID, String> entry : nicknames.entrySet()) {
+			if (entry.getValue().equals(nick)) return entry.getKey();
+		}
+
+		return null;
+	}
+
 	public boolean setNickName(final UUID id, final String nickname) {
 		if (nickname == null) {
 			nicknames.remove(id);
 			return true;
 		}
 
-		if (!duplicate && nicknames.containsValue(nickname)) {
-			return false;
-		}
+		if (!duplicate && nicknames.containsValue(nickname)) return false;
 
-		if (nicknames.containsKey(id)) {
-			nicknames.remove(id);
-		}
+		if (nicknames.containsKey(id)) nicknames.remove(id);
 		nicknames.put(id, nickname);
 		return true;
 	}
@@ -50,9 +55,8 @@ public final class NickNameManager implements Listener {
 		final YamlConfiguration conf = plugin.getNicksConfig();
 		final Set<String> keys = conf.getKeys(false);
 
-		for (final String key : keys) {
+		for (final String key : keys)
 			nicknames.put(UUID.fromString(key), conf.getString(key));
-		}
 	}
 
 	public void saveNicks(final File file) {
@@ -67,9 +71,7 @@ public final class NickNameManager implements Listener {
 		}
 
 		for (final String key : conf.getKeys(false)) {
-			if (!done.contains(key)) {
-				conf.set(key, null);
-			}
+			if (!done.contains(key)) conf.set(key, null);
 		}
 
 		try {
@@ -79,37 +81,7 @@ public final class NickNameManager implements Listener {
 		}
 	}
 
-	public String getNickName(UUID player) {
-		return nicknames.get(player);
-	}
-
-	public UUID getPlayerFromNickName(String nick) {
-		if (duplicate) {
-			return null;
-		}
-
-		for (Entry<UUID, String> entry : nicknames.entrySet()) {
-			if (entry.getValue().equals(nick)) {
-				return entry.getKey();
-			}
-		}
-
-		return null;
-	}
-
 	public boolean allowingDuplicates() {
 		return duplicate;
-	}
-
-	@EventHandler(priority = EventPriority.MONITOR)
-	public void onPlayerJoin(final PlayerJoinEvent event) {
-		final Player player = event.getPlayer();
-		final UUID playerId = player.getUniqueId();
-		final String nick = nicknames.get(playerId);
-
-		if (nick != null) {
-			player.setDisplayName(nick);
-			player.setPlayerListName(nick);
-		}
 	}
 }
