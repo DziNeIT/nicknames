@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 public class NickNamesListener implements Listener {
-	private NickNameManager nickManager;
+	private final NickNameManager nickManager;
 
 	public NickNamesListener(final NickNames plugin) {
 		nickManager = plugin.getNickManager();
@@ -27,7 +27,7 @@ public class NickNamesListener implements Listener {
 			player.setPlayerListName(nick);
 
 			final String joinMsg = event.getJoinMessage();
-			if (joinMsg != null && !(joinMsg.equals(""))) {
+			if (joinMsg != null && !joinMsg.equals("")) {
 				event.setJoinMessage(joinMsg.replaceAll(player.getName(), nick));
 			}
 		}
@@ -41,7 +41,7 @@ public class NickNamesListener implements Listener {
 
 		if (nick != null) {
 			final String quitMsg = event.getQuitMessage();
-			if (quitMsg != null && !(quitMsg.equals(""))) {
+			if (quitMsg != null && !quitMsg.equals("")) {
 				event.setQuitMessage(quitMsg.replaceAll(player.getName(), nick));
 			}
 		}

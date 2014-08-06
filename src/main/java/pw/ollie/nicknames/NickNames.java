@@ -28,14 +28,14 @@ public final class NickNames extends JavaPlugin {
 		if (!configFile.exists()) {
 			try {
 				configFile.createNewFile();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				e.printStackTrace();
 			}
 		}
 		if (!nicksFile.exists()) {
 			try {
 				nicksFile.createNewFile();
-			} catch (IOException e) {
+			} catch (final IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -48,7 +48,7 @@ public final class NickNames extends JavaPlugin {
 		manager = new NickNameManager(this);
 		manager.loadNicks();
 
-		NickCommand nickCommand = new NickCommand(manager);
+		final NickCommand nickCommand = new NickCommand(manager);
 		getCommand("nick").setExecutor(nickCommand);
 		getCommand("nicknames").setExecutor(nickCommand);
 

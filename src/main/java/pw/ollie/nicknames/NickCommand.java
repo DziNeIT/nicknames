@@ -20,7 +20,7 @@ public final class NickCommand implements CommandExecutor {
 		final String cn = cmd.getName().toLowerCase();
 
 		if (cn.equals("nick")) {
-			if ((sender instanceof Player)) {
+			if (sender instanceof Player) {
 				final Player player = (Player) sender;
 				if (args.length < 1 || args.length > 2) {
 					player.sendMessage(ChatColor.DARK_RED + "Usage: /nick <nickname> or /nick <playername> <nickname>");

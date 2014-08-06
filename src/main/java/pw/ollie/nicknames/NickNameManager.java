@@ -16,7 +16,7 @@ public final class NickNameManager {
 	private final NickNames plugin;
 	private final boolean duplicate;
 
-	private Map<UUID, String> nicknames = new HashMap<>();
+	private final Map<UUID, String> nicknames = new HashMap<>();
 
 	public NickNameManager(final NickNames plugin) {
 		this.plugin = plugin;
@@ -24,15 +24,19 @@ public final class NickNameManager {
 		duplicate = plugin.allowDuplicates();
 	}
 
-	public String getNickName(UUID player) {
+	public String getNickName(final UUID player) {
 		return nicknames.get(player);
 	}
 
-	public UUID getPlayerFromNickName(String nick) {
-		if (duplicate) return null;
+	public UUID getPlayerFromNickName(final String nick) {
+		if (duplicate) {
+			return null;
+		}
 
-		for (Entry<UUID, String> entry : nicknames.entrySet()) {
-			if (entry.getValue().equals(nick)) return entry.getKey();
+		for (final Entry<UUID, String> entry : nicknames.entrySet()) {
+			if (entry.getValue().equals(nick)) {
+				return entry.getKey();
+			}
 		}
 
 		return null;
@@ -44,9 +48,13 @@ public final class NickNameManager {
 			return true;
 		}
 
-		if (!duplicate && nicknames.containsValue(nickname)) return false;
+		if (!duplicate && nicknames.containsValue(nickname)) {
+			return false;
+		}
 
-		if (nicknames.containsKey(id)) nicknames.remove(id);
+		if (nicknames.containsKey(id)) {
+			nicknames.remove(id);
+		}
 		nicknames.put(id, nickname);
 		return true;
 	}
@@ -55,8 +63,9 @@ public final class NickNameManager {
 		final YamlConfiguration conf = plugin.getNicksConfig();
 		final Set<String> keys = conf.getKeys(false);
 
-		for (final String key : keys)
+		for (final String key : keys) {
 			nicknames.put(UUID.fromString(key), conf.getString(key));
+		}
 	}
 
 	public void saveNicks(final File file) {
@@ -71,12 +80,14 @@ public final class NickNameManager {
 		}
 
 		for (final String key : conf.getKeys(false)) {
-			if (!done.contains(key)) conf.set(key, null);
+			if (!done.contains(key)) {
+				conf.set(key, null);
+			}
 		}
 
 		try {
 			conf.save(file);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 	}
