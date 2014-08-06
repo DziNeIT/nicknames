@@ -15,6 +15,7 @@ public final class NickNames extends JavaPlugin {
 
 	// Options
 	private boolean duplicates;
+	private String jqMsgColour;
 
 	@Override
 	public void onEnable() {
@@ -44,6 +45,7 @@ public final class NickNames extends JavaPlugin {
 		nicks = YamlConfiguration.loadConfiguration(nicksFile);
 
 		duplicates = config.getBoolean("allow-duplicate-nicknames", false);
+		jqMsgColour = config.getString("join-and-quit-message-colour", "&e");
 
 		manager = new NickNameManager(this);
 		manager.loadNicks();
@@ -62,6 +64,10 @@ public final class NickNames extends JavaPlugin {
 
 	public NickNameManager getNickManager() {
 		return manager;
+	}
+
+	public String getJoinQuitMessageColour() {
+		return jqMsgColour;
 	}
 
 	public boolean allowDuplicates() {

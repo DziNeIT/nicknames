@@ -11,9 +11,11 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class NickNamesListener implements Listener {
 	private final NickNameManager nickManager;
+	private final String jqMsgColour;
 
 	public NickNamesListener(final NickNames plugin) {
 		nickManager = plugin.getNickManager();
+		jqMsgColour = plugin.getJoinQuitMessageColour();
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
@@ -42,7 +44,7 @@ public class NickNamesListener implements Listener {
 		if (nick != null) {
 			final String quitMsg = event.getQuitMessage();
 			if (quitMsg != null && !quitMsg.equals("")) {
-				event.setQuitMessage(quitMsg.replaceAll(player.getName(), nick));
+				event.setQuitMessage(quitMsg.replaceAll(player.getName(), nick + jqMsgColour));
 			}
 		}
 	}
