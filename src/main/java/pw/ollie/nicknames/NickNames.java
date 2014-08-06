@@ -44,6 +44,19 @@ public final class NickNames extends JavaPlugin {
 		config = YamlConfiguration.loadConfiguration(configFile);
 		nicks = YamlConfiguration.loadConfiguration(nicksFile);
 
+		if (!config.contains("allow-duplicate-nicknames")) {
+			config.set("allow-duplicate-nicknames", false);
+		}
+		if (!config.contains("join-and-quit-message-colour")) {
+			config.set("join-and-quit-message-colour", "&e");
+		}
+
+		try {
+			config.save(configFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		duplicates = config.getBoolean("allow-duplicate-nicknames", false);
 		jqMsgColour = config.getString("join-and-quit-message-colour", "&e");
 
