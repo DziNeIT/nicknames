@@ -53,7 +53,7 @@ public final class NickNames extends JavaPlugin {
 
 		try {
 			config.save(configFile);
-		} catch (IOException e) {
+		} catch (final IOException e) {
 			e.printStackTrace();
 		}
 

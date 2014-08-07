@@ -10,6 +10,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public final class NickNameManager {
@@ -28,15 +29,12 @@ public final class NickNameManager {
 		return nicknames.get(player);
 	}
 
-	public UUID getPlayerFromNickName(final String nick) {
-		if (duplicate) {
-			return null;
-		}
+	public UUID getPlayerFromNickName(String nick) {
+		if (duplicate) { return null; }
 
+		nick = ChatColor.stripColor(nick);
 		for (final Entry<UUID, String> entry : nicknames.entrySet()) {
-			if (entry.getValue().equals(nick)) {
-				return entry.getKey();
-			}
+			if (ChatColor.stripColor(entry.getValue()).equals(nick)) { return entry.getKey(); }
 		}
 
 		return null;
@@ -48,13 +46,11 @@ public final class NickNameManager {
 			return true;
 		}
 
-		if (!duplicate && nicknames.containsValue(nickname)) {
-			return false;
-		}
-
+		if (!duplicate && getPlayerFromNickName(nickname) != null) { return false; }
 		if (nicknames.containsKey(id)) {
 			nicknames.remove(id);
 		}
+
 		nicknames.put(id, nickname);
 		return true;
 	}
