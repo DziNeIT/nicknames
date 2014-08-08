@@ -13,22 +13,49 @@ import java.util.UUID;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+/**
+ * The manager of player nick names for the NickNames Bukkit plugin
+ */
 public final class NickNameManager {
+	/**
+	 * The NickNames plugin object
+	 */
 	private final NickNames plugin;
+	/**
+	 * Whether to allow multiple players to have the same nickname
+	 */
 	private final boolean duplicate;
-
-	private final Map<UUID, String> nicknames = new HashMap<>();
+	/**
+	 * A Map of player identifiers to nicknames
+	 */
+	private final Map<UUID, String> nicknames;
 
 	public NickNameManager(final NickNames plugin) {
 		this.plugin = plugin;
 
 		duplicate = plugin.allowDuplicates();
+		nicknames = new HashMap<>();
 	}
 
+	/**
+	 * Gets the nick name of the player with the given unique identifier
+	 * 
+	 * @param player
+	 *            The unique identifier of the player to get the nick of
+	 * @return The nick name of the player with the given unique identifier
+	 */
 	public String getNickName(final UUID player) {
 		return nicknames.get(player);
 	}
 
+	/**
+	 * Gets the player who has the given nick name. If duplicate nicks are
+	 * allowed, this will return null as there is no way to check
+	 * 
+	 * @param nick
+	 *            The nick name of the player to get
+	 * @return The unique identifier player with the given nickname
+	 */
 	public UUID getPlayerFromNickName(String nick) {
 		if (duplicate) { return null; }
 
@@ -40,6 +67,15 @@ public final class NickNameManager {
 		return null;
 	}
 
+	/**
+	 * Sets the nickname of the given player to the given nickname
+	 * 
+	 * @param id
+	 *            The unique identifier of the player to set the nick for
+	 * @param nickname
+	 *            The new nickname to set for the given player
+	 * @return Whether the player's nickname was successfully set
+	 */
 	public boolean setNickName(final UUID id, final String nickname) {
 		if (nickname == null) {
 			nicknames.remove(id);
@@ -55,6 +91,9 @@ public final class NickNameManager {
 		return true;
 	}
 
+	/**
+	 * Loads all nick names from the configuration
+	 */
 	public void loadNicks() {
 		final YamlConfiguration conf = plugin.getNicksConfig();
 		final Set<String> keys = conf.getKeys(false);
@@ -64,6 +103,12 @@ public final class NickNameManager {
 		}
 	}
 
+	/**
+	 * Saves all nick names to the given file
+	 * 
+	 * @param file
+	 *            The file to save the nick names to
+	 */
 	public void saveNicks(final File file) {
 		final YamlConfiguration conf = plugin.getNicksConfig();
 		final List<String> done = new ArrayList<>();

@@ -8,6 +8,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * Deals with the /nick command in NickNames
+ */
 public final class NickCommand implements CommandExecutor {
 	private final NickNameManager nickManager;
 
