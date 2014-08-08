@@ -3,6 +3,9 @@ package pw.ollie.nicknames;
 import java.io.File;
 import java.io.IOException;
 
+import pw.ollie.nicknames.command.NickCommand;
+import pw.ollie.nicknames.command.NickNamesCommand;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -93,9 +96,8 @@ public final class NickNames extends JavaPlugin {
 		manager.loadNicks();
 
 		// Setup commands
-		final NickCommand nickCommand = new NickCommand(manager);
-		getCommand("nick").setExecutor(nickCommand);
-		getCommand("nicknames").setExecutor(nickCommand);
+		getCommand("nick").setExecutor(new NickCommand(manager));
+		getCommand("nicknames").setExecutor(new NickNamesCommand(manager));
 
 		// Register listener with Bukkit
 		getServer().getPluginManager().registerEvents(new NickNamesListener(this), this);
