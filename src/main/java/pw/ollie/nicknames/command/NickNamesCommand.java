@@ -1,7 +1,12 @@
 package pw.ollie.nicknames.command;
 
+import java.util.Iterator;
+import java.util.Set;
+import java.util.UUID;
+
 import pw.ollie.nicknames.NickNameManager;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -46,8 +51,15 @@ public class NickNamesCommand implements CommandExecutor {
                         sender.sendMessage(ChatColor.DARK_RED
                                 + "Can't lookup a nick when duplicate nicknames are allowed!");
                     } else {
-                        sender.sendMessage(ChatColor.GRAY + "User with the nickname " + args[1] + " is called "
-                                + nickManager.getPlayerFromNickName(args[1]));
+                        final Set<UUID> players = nickManager.getPlayersFromNickName(args[1]);
+                        if (players.size() == 0) {
+                            sender.sendMessage(ChatColor.DARK_RED + "No players have that nick!");
+                        } else if (players.size() == 1) {
+                            sender.sendMessage(ChatColor.GRAY + "Player with nick '" + args[1] + "' is called " + Bukkit.getPlayer(players.iterator().next()).getName());
+                        } else if (players.size() > 1) {
+                            sender.sendMessage(ChatColor.GRAY + "Players with nick " + args[1] + ":");
+                            sender.sendMessage(ChatColor.GRAY + formatPlayerNames(players));
+                        }
                     }
                 } else {
                     sender.sendMessage(ChatColor.DARK_RED + "Usage: /nicknames lookup <nick>");
@@ -58,5 +70,18 @@ public class NickNamesCommand implements CommandExecutor {
         }
 
         return true;
+    }
+
+    private String formatPlayerNames(final Set<UUID> uuids) {
+        final StringBuilder builder = new StringBuilder();
+        final Iterator<UUID> it = uuids.iterator();
+        for (int i = 0; i < uuids.size(); i++) {
+            final UUID id = it.next();
+            builder.append(Bukkit.getPlayer(id).getName());
+            if (i != uuids.size() - 1) {
+                builder.append(", ");
+            }
+        }
+        return builder.toString();
     }
 }

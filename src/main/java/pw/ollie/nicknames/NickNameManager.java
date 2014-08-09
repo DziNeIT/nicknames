@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -49,26 +50,21 @@ public final class NickNameManager {
     }
 
     /**
-     * Gets the player who has the given nick name. If duplicate nicks are
-     * allowed, this will return null as there is no way to check
+     * Gets the players who have the given nick name
      * 
      * @param nick
-     *            The nick name of the player to get
-     * @return The unique identifier player with the given nickname
+     *            The nick name of the players to get
+     * @return The unique identifiers of all players with the given nickname
      */
-    public UUID getPlayerFromNickName(String nick) {
-        if (duplicate) {
-            return null;
-        }
-
+    public Set<UUID> getPlayersFromNickName(String nick) {
+        final Set<UUID> res = new HashSet<>();
         nick = ChatColor.stripColor(nick);
         for (final Entry<UUID, String> entry : nicknames.entrySet()) {
             if (ChatColor.stripColor(entry.getValue()).equals(nick)) {
-                return entry.getKey();
+                res.add(entry.getKey());
             }
         }
-
-        return null;
+        return res;
     }
 
     /**
@@ -86,7 +82,7 @@ public final class NickNameManager {
             return true;
         }
 
-        if (!duplicate && getPlayerFromNickName(nickname) != null) {
+        if (!duplicate && getPlayersFromNickName(nickname).size() > 0) {
             return false;
         }
         if (nicknames.containsKey(id)) {
